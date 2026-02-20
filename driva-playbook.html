@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driva — Playbook de Consultoria de ERP</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --azul: #003355;
+  --azul-mid: #0a4a73;
+  --preto: #07131E;
+  --laranja: #F07F2D;
+  --laranja-soft: rgba(240,127,45,0.12);
+  --cinza: #475467;
+  --branco: #F8F9FC;
+  --cinza-claro: #94A3B8;
+  --line: rgba(255,255,255,0.07);
+  --line-dark: rgba(0,51,85,0.1);
+  --sidebar-w: 240px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--preto);
+  color:rgba(255,255,255,0.85);
+  display:flex;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar-w);
+  position:fixed;
+  top:0;left:0;bottom:0;
+  background:rgba(7,19,30,0.98);
+  border-right:1px solid var(--line);
+  display:flex;
+  flex-direction:column;
+  z-index:100;
+  overflow-y:auto;
+}
+
+.sidebar-logo{
+  padding:28px 24px 20px;
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:10px;
+}
+
+.sidebar-logo svg{width:28px;height:28px;flex-shrink:0;}
+.logo-text{
+  font-family:'Lexend',sans-serif;
+  font-weight:700;
+  font-size:17px;
+  color:white;
+  letter-spacing:0.1em;
+}
+
+.sidebar-label{
+  padding:20px 24px 8px;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.25);
+}
+
+.nav-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 24px;
+  color:rgba(255,255,255,0.45);
+  text-decoration:none;
+  font-size:12.5px;
+  font-weight:500;
+  transition:all 0.15s;
+  border-left:2px solid transparent;
+  cursor:pointer;
+}
+
+.nav-item:hover{
+  color:rgba(255,255,255,0.85);
+  background:rgba(255,255,255,0.03);
+}
+
+.nav-item.active{
+  color:var(--laranja);
+  border-left-color:var(--laranja);
+  background:rgba(240,127,45,0.06);
+}
+
+.nav-num{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  color:var(--laranja);
+  opacity:0.5;
+  width:16px;
+}
+
+.nav-item.active .nav-num{opacity:1;}
+
+.sidebar-footer{
+  margin-top:auto;
+  padding:20px 24px;
+  border-top:1px solid var(--line);
+  font-size:11px;
+  color:rgba(255,255,255,0.2);
+  line-height:1.5;
+}
+
+/* ── MAIN ── */
+.main{
+  margin-left:var(--sidebar-w);
+  flex:1;
+  max-width:calc(100vw - var(--sidebar-w));
+}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg, var(--preto) 0%, var(--azul) 100%);
+  padding:80px 64px;
+  position:relative;
+  overflow:hidden;
+  border-bottom:1px solid var(--line);
+}
+
+.hero::before{
+  content:'';
+  position:absolute;
+  right:-80px;top:-80px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(240,127,45,0.1) 0%,transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+}
+
+.hero-badge{
+  display:inline-flex;
+  align-items:center;gap:8px;
+  background:rgba(240,127,45,0.1);
+  border:1px solid rgba(240,127,45,0.3);
+  color:var(--laranja);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  padding:6px 14px;
+  border-radius:100px;
+  margin-bottom:24px;
+}
+
+.hero h1{
+  font-family:'Lexend',sans-serif;
+  font-weight:800;
+  font-size:2.6rem;
+  color:white;
+  line-height:1.1;
+  margin-bottom:16px;
+  max-width:640px;
+}
+
+.hero h1 em{
+  color:var(--laranja);
+  font-style:normal;
+}
+
+.hero p{
+  font-size:15px;
+  color:rgba(255,255,255,0.6);
+  line-height:1.7;
+  max-width:560px;
+  margin-bottom:40px;
+}
+
+.hero-meta{
+  display:flex;
+  gap:32px;
+}
+
+.hero-meta-item{
+  display:flex;flex-direction:column;
+}
+
+.hero-meta-item .val{
+  font-family:'Lexend',sans-serif;
+  font-weight:700;
+  font-size:1.8rem;
+  color:white;
+}
+
+.hero-meta-item .key{
+  font-size:11px;
+  color:rgba(255,255,255,0.4);
+  margin-top:2px;
+}
+
+/* ── SECTIONS ── */
+.section{
+  padding:64px;
+  border-bottom:1px solid var(--line);
+}
+
+.section:nth-child(even){
+  background:rgba(255,255,255,0.015);
+}
+
+.section-header{
+  margin-bottom:40px;
+}
+
+.sec-num{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--laranja);
+  letter-spacing:0.1em;
+  margin-bottom:8px;
+  display:block;
+}
+
+.section h2{
+  font-family:'Lexend',sans-serif;
+  font-weight:700;
+  font-size:1.6rem;
+  color:white;
+  margin-bottom:10px;
+  line-height:1.2;
+}
+
+.section .lead{
+  font-size:14px;
+  color:rgba(255,255,255,0.5);
+  line-height:1.7;
+  max-width:680px;
+}
+
+/* ── CALLOUT BOX ── */
+.callout{
+  background:rgba(240,127,45,0.07);
+  border:1px solid rgba(240,127,45,0.2);
+  border-radius:10px;
+  padding:20px 24px;
+  margin:24px 0;
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+}
+
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+
+.callout p{
+  font-size:13.5px;
+  line-height:1.7;
+  color:rgba(255,255,255,0.8);
+}
+
+.callout strong{color:var(--laranja);}
+
+.callout.blue{
+  background:rgba(0,51,85,0.4);
+  border-color:rgba(10,74,115,0.5);
+}
+
+.callout.blue p{color:rgba(255,255,255,0.7);}
+
+/* ── GRID CARDS ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+.card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:22px;
+  transition:border-color 0.2s,background 0.2s;
+}
+
+.card:hover{
+  border-color:rgba(240,127,45,0.3);
+  background:rgba(240,127,45,0.03);
+}
+
+.card .card-label{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.13em;
+  text-transform:uppercase;
+  color:var(--laranja);
+  margin-bottom:8px;
+}
+
+.card h3{
+  font-family:'Lexend',sans-serif;
+  font-weight:600;
+  font-size:14px;
+  color:white;
+  margin-bottom:10px;
+  line-height:1.3;
+}
+
+.card p,.card ul{
+  font-size:13px;
+  color:rgba(255,255,255,0.5);
+  line-height:1.65;
+}
+
+.card ul{padding-left:16px;}
+.card ul li{margin-bottom:5px;}
+
+.card.highlight{
+  background:rgba(240,127,45,0.08);
+  border-color:rgba(240,127,45,0.25);
+}
+
+.card.dark-strong{
+  background:rgba(0,51,85,0.35);
+  border-color:rgba(10,74,115,0.4);
+}
+
+/* ── PILL TAGS ── */
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+
+.pill{
+  font-size:11.5px;
+  font-weight:500;
+  padding:4px 12px;
+  border-radius:100px;
+  white-space:nowrap;
+}
+
+.pill-blue{background:rgba(0,51,85,0.5);color:rgba(255,255,255,0.7);}
+.pill-orange{background:rgba(240,127,45,0.15);color:var(--laranja);}
+.pill-gray{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);}
+
+/* ── STEP FLOW ── */
+.step-flow{
+  display:flex;
+  gap:0;
+  margin-top:8px;
+  position:relative;
+}
+
+.step-flow::before{
+  content:'';
+  position:absolute;
+  top:24px;left:24px;right:24px;
+  height:1px;
+  background:rgba(255,255,255,0.08);
+}
+
+.step-item{
+  flex:1;
+  text-align:center;
+  padding:0 12px;
+  position:relative;
+}
+
+.step-circle{
+  width:48px;height:48px;
+  border-radius:50%;
+  background:rgba(240,127,45,0.1);
+  border:1px solid rgba(240,127,45,0.3);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;
+  position:relative;z-index:1;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:14px;
+  font-weight:500;
+  color:var(--laranja);
+}
+
+.step-item h4{
+  font-family:'Lexend',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  color:white;
+  margin-bottom:6px;
+}
+
+.step-item p{
+  font-size:11px;
+  color:rgba(255,255,255,0.4);
+  line-height:1.55;
+}
+
+/* ── TABLE-LIKE ── */
+.info-row{
+  display:grid;
+  grid-template-columns:200px 1fr;
+  gap:0;
+  border-bottom:1px solid var(--line);
+  align-items:start;
+}
+
+.info-row:first-child{border-top:1px solid var(--line);}
+
+.info-key{
+  padding:14px 20px 14px 0;
+  font-size:11.5px;
+  font-weight:600;
+  color:rgba(255,255,255,0.35);
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  flex-shrink:0;
+}
+
+.info-val{
+  padding:14px 0;
+  font-size:13.5px;
+  color:rgba(255,255,255,0.75);
+  line-height:1.65;
+  border-left:1px solid var(--line);
+  padding-left:20px;
+}
+
+/* ── MODELS TABS ── */
+.tabs{
+  display:flex;
+  gap:2px;
+  margin-bottom:24px;
+  background:rgba(255,255,255,0.04);
+  border-radius:8px;
+  padding:4px;
+  width:fit-content;
+}
+
+.tab-btn{
+  padding:9px 22px;
+  border:none;
+  border-radius:6px;
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.15s;
+  background:transparent;
+  color:rgba(255,255,255,0.4);
+}
+
+.tab-btn.active{
+  background:var(--laranja);
+  color:white;
+}
+
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ── PERSONA CARDS ── */
+.persona-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+.persona-card{
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid var(--line);
+}
+
+.persona-header{
+  padding:16px 20px;
+  background:rgba(0,51,85,0.4);
+}
+
+.persona-role-tag{
+  font-size:9.5px;
+  font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+
+.persona-header h3{
+  font-family:'Lexend',sans-serif;
+  font-size:14px;
+  color:white;
+  font-weight:700;
+}
+
+.persona-body{
+  padding:16px 20px;
+  background:rgba(255,255,255,0.025);
+}
+
+.persona-body p{
+  font-size:12.5px;
+  color:rgba(255,255,255,0.55);
+  line-height:1.65;
+}
+
+/* ── OBJECTION ── */
+.obj-item{
+  border-bottom:1px solid var(--line);
+  padding:20px 0;
+}
+
+.obj-item:last-child{border-bottom:none;}
+
+.obj-q{
+  font-family:'Lexend',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  color:rgba(255,255,255,0.85);
+  margin-bottom:8px;
+  display:flex;align-items:flex-start;gap:10px;
+}
+
+.obj-q::before{
+  content:'"';
+  color:var(--laranja);
+  font-size:22px;
+  line-height:1;
+  flex-shrink:0;
+  font-family:'Lexend',sans-serif;
+}
+
+.obj-a{
+  font-size:13px;
+  color:rgba(255,255,255,0.5);
+  line-height:1.7;
+  padding-left:26px;
+}
+
+/* ── DATA BADGES ── */
+.erp-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+
+.erp-b{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  font-weight:500;
+  padding:5px 12px;
+  border-radius:5px;
+  letter-spacing:0.04em;
+}
+
+.erp-b.main{background:rgba(0,51,85,0.6);color:white;border:1px solid rgba(10,74,115,0.6);}
+.erp-b.sub{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.08);}
+.erp-b.highlight{background:rgba(240,127,45,0.15);color:var(--laranja);border:1px solid rgba(240,127,45,0.3);}
+
+/* ── PITCH BLOCK ── */
+.pitch-block{
+  background:rgba(0,51,85,0.25);
+  border:1px solid rgba(10,74,115,0.5);
+  border-radius:10px;
+  padding:24px;
+}
+
+.pitch-block .model-tag{
+  font-size:10px;font-weight:700;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--laranja);margin-bottom:10px;
+}
+
+.pitch-block h3{
+  font-family:'Lexend',sans-serif;
+  font-size:15px;color:white;margin-bottom:14px;
+}
+
+.pitch-block .quote-text{
+  font-size:14px;
+  color:rgba(255,255,255,0.8);
+  line-height:1.75;
+  font-style:italic;
+  border-left:2px solid var(--laranja);
+  padding-left:16px;
+}
+
+/* ── QUESTION LIST ── */
+.q-list{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
+
+.q-item{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  padding:14px 18px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--line);
+  border-radius:8px;
+}
+
+.q-item .qn{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--laranja);
+  flex-shrink:0;
+  margin-top:1px;
+}
+
+.q-item p{
+  font-size:13px;
+  color:rgba(255,255,255,0.65);
+  line-height:1.6;
+}
+
+/* ── DIVIDER ── */
+.divider{
+  border:none;
+  border-top:1px solid var(--line);
+  margin:32px 0;
+}
+
+/* ── INLINE KEY VALUE ── */
+.kv-row{
+  display:flex;gap:10px;align-items:baseline;
+  margin-bottom:8px;
+}
+
+.kv-k{
+  font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.08em;
+  color:rgba(255,255,255,0.3);
+  flex-shrink:0;
+  min-width:120px;
+}
+
+.kv-v{
+  font-size:13px;
+  color:rgba(255,255,255,0.7);
+  line-height:1.6;
+}
+
+/* ── ROI HIGHLIGHT ── */
+.roi-box{
+  background:linear-gradient(135deg,rgba(240,127,45,0.1),rgba(0,51,85,0.3));
+  border:1px solid rgba(240,127,45,0.25);
+  border-radius:12px;
+  padding:28px 32px;
+  text-align:center;
+}
+
+.roi-box p{
+  font-family:'Lexend',sans-serif;
+  font-size:1.1rem;
+  font-weight:600;
+  color:white;
+  line-height:1.5;
+}
+
+.roi-box p em{color:var(--laranja);font-style:normal;}
+
+/* ── SECTION DIVIDER ── */
+.sec-divider{
+  display:flex;align-items:center;gap:16px;
+  margin:40px 0 32px;
+}
+
+.sec-divider hr{flex:1;border:none;border-top:1px solid var(--line);}
+
+.sec-divider span{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  color:rgba(255,255,255,0.2);
+  white-space:nowrap;
+  letter-spacing:0.1em;
+}
+
+/* ── SCROLL ── */
+.fade-in{
+  opacity:0;
+  transform:translateY(16px);
+  transition:opacity 0.5s ease,transform 0.5s ease;
+}
+
+.fade-in.visible{opacity:1;transform:none;}
+
+/* ── STICKY SECTION LABEL ── */
+.sticky-label{
+  position:sticky;
+  top:0;z-index:10;
+  background:rgba(7,19,30,0.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:10px 64px;
+  display:flex;align-items:center;gap:10px;
+}
+
+.sticky-label span{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  color:var(--laranja);
+  letter-spacing:0.1em;
+}
+
+.sticky-label strong{
+  font-family:'Lexend',sans-serif;
+  font-size:12px;
+  color:rgba(255,255,255,0.5);
+  font-weight:600;
+}
+
+/* ── USAGE BLOCK ── */
+.usage-block{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-top:8px;
+}
+
+.usage-card{
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:22px;
+}
+
+.usage-card .u-num{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:28px;
+  font-weight:500;
+  color:rgba(240,127,45,0.3);
+  margin-bottom:10px;
+  display:block;
+}
+
+.usage-card h4{
+  font-family:'Lexend',sans-serif;
+  font-size:14px;
+  color:white;font-weight:700;
+  margin-bottom:8px;
+}
+
+.usage-card p{
+  font-size:13px;
+  color:rgba(255,255,255,0.5);
+  line-height:1.65;
+}
+
+/* ── CONCORRENTES ── */
+.concor-box{
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:22px 26px;
+}
+
+.concor-box p{
+  font-size:13.5px;
+  color:rgba(255,255,255,0.6);
+  line-height:1.7;
+}
+
+/* ── METODOLOGIA ── */
+.meto-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-top:8px;
+}
+
+.meto-item{
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:18px 22px;
+}
+
+.meto-item .meto-tag{
+  font-size:9.5px;
+  font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--laranja);
+  margin-bottom:8px;
+}
+
+.meto-item p{
+  font-size:13px;
+  color:rgba(255,255,255,0.6);
+  line-height:1.65;
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <svg viewBox="0 0 40 40" fill="none">
+      <polygon points="6,6 34,20 6,34" fill="#D0D5DD" opacity="0.55"/>
+      <polygon points="6,26 19,20 13,37" fill="#F07F2D"/>
+    </svg>
+    <span class="logo-text">DRIVA</span>
+  </div>
+
+  <span class="sidebar-label">Playbook</span>
+  <a class="nav-item active" href="#sec-overview" onclick="setActive(this)">
+    <span class="nav-num">01</span>Visão Geral do Mercado
+  </a>
+  <a class="nav-item" href="#sec-modelos" onclick="setActive(this)">
+    <span class="nav-num">02</span>Dois Modelos de Operação
+  </a>
+  <a class="nav-item" href="#sec-processo" onclick="setActive(this)">
+    <span class="nav-num">03</span>Processo de Vendas
+  </a>
+  <a class="nav-item" href="#sec-papel" onclick="setActive(this)">
+    <span class="nav-num">04</span>O Papel da Driva
+  </a>
+  <a class="nav-item" href="#sec-personas" onclick="setActive(this)">
+    <span class="nav-num">05</span>Personas
+  </a>
+  <a class="nav-item" href="#sec-dores" onclick="setActive(this)">
+    <span class="nav-num">06</span>Dores
+  </a>
+  <a class="nav-item" href="#sec-dados" onclick="setActive(this)">
+    <span class="nav-num">07</span>Dados e Análises
+  </a>
+  <a class="nav-item" href="#sec-pitch" onclick="setActive(this)">
+    <span class="nav-num">08</span>Pitch e Diagnóstico
+  </a>
+
+  <div class="sidebar-footer">
+    BU de Serviços<br>
+    Uso interno — Pré-vendas,<br>Vendas & Inteligência Comercial
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">
+      <span>●</span> Playbook Interno · BU de Serviços
+    </div>
+    <h1>Consultoria de <em>ERP</em>:<br>Como a Driva atua nesse mercado</h1>
+    <p>Guia completo para os times de Pré-vendas, Vendas e Inteligência de Mercado entenderem o segmento, os modelos de operação, as personas, as dores e como posicionar a Driva.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="val">39.498</span>
+        <span class="key">empresas mapeadas</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="val">17+</span>
+        <span class="key">ERPs identificados</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="val">2</span>
+        <span class="key">modelos principais de operação</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="val">8</span>
+        <span class="key">seções neste playbook</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       01. VISÃO GERAL DO MERCADO
+  ══════════════════════════════════════ -->
+  <div id="sec-overview" class="sticky-label">
+    <span>01</span>
+    <strong>Visão Geral do Mercado de Consultorias de ERP</strong>
+  </div>
+
+  <section class="section">
+    <div class="section-header fade-in">
+      <span class="sec-num">01 — VISÃO GERAL</span>
+      <h2>Um mercado de alto valor e alta complexidade</h2>
+      <p class="lead">Projetos envolvem mudanças profundas na operação das empresas, o que aumenta o nível de decisão, o número de pessoas envolvidas e o tempo necessário para fechar contratos.</p>
+    </div>
+
+    <div class="callout fade-in">
+      <span class="callout-icon">🎯</span>
+      <p><strong>Ponto central:</strong> O problema não é falta de demanda — é falta de previsibilidade e eficiência comercial para transformar mercado em oportunidades reais.</p>
+    </div>
+
+    <div class="grid-2 fade-in" style="margin-top:28px;">
+      <div class="card">
+        <div class="card-label">Ciclos de Venda</div>
+        <h3>Longos por natureza</h3>
+        <p>É comum variar de alguns meses até mais de um ano, dependendo do porte do cliente e do tipo de projeto.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Ticket</div>
+        <h3>Elevado em projetos complexos</h3>
+        <p>Projetos de implantação e evolução podem atingir valores muito altos, especialmente em ERPs mais complexos e em empresas maiores.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Maturidade Comercial</div>
+        <h3>Desigual no mercado</h3>
+        <p>Muitas consultorias são tecnicamente muito fortes, mas operam com processos comerciais tradicionais, equipe enxuta e pouca automação.</p>
+      </div>
+      <div class="card highlight">
+        <div class="card-label">Listas de Parceiros</div>
+        <h3>Baixa qualidade — oportunidade da Driva</h3>
+        <p>Consultorias parceiras oficiais de fabricantes recebem listas de potenciais clientes, mas essas listas tendem a ser <strong style="color:var(--laranja)">frias e incompletas</strong> — sem CNPJ, contatos, tecnologia instalada e outros dados mínimos para prospectar com eficiência.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       02. DOIS MODELOS
+  ══════════════════════════════════════ -->
+  <div id="sec-modelos" class="sticky-label">
+    <span>02</span>
+    <strong>Dois Modelos Principais de Consultorias de ERP</strong>
+  </div>
+
+  <section class="section">
+    <div class="section-header fade-in">
+      <span class="sec-num">02 — MODELOS</span>
+      <h2>Como as consultorias operam</h2>
+      <p class="lead">As consultorias tendem a operar em dois modelos (ou uma combinação dos dois). A diferença entre eles muda a estratégia de prospecção e o tipo de dado mais valioso.</p>
+    </div>
+
+    <div class="tabs fade-in">
+      <button class="tab-btn active" onclick="switchTab(this,'m1')">Modelo 1 — Venda do ERP + Implantação</button>
+      <button class="tab-btn" onclick="switchTab(this,'m2')">Modelo 2 — Base Instalada</button>
+    </div>
+
+    <!-- MODELO 1 -->
+    <div id="tab-m1" class="tab-panel active fade-in">
+      <div class="callout blue">
+        <span class="callout-icon">📌</span>
+        <p>A consultoria atua como <strong>canal do fabricante ou integradora</strong>, vendendo o ERP junto com o projeto de implantação. O foco está em empresas que estão crescendo, que ainda não têm um ERP adequado, ou que precisam modernizar a gestão — mas <strong>sem depender exclusivamente de "troca de ERP"</strong> como tese central. Na prática, "trocar ERP" é difícil, então muitas consultorias evitam depender disso. Em vez disso, capturam demanda pelo contexto do negócio e pelos sinais de necessidade.</p>
+      </div>
+
+      <div class="sec-divider"><hr><span>COMO PROSPECTAM</span><hr></div>
+
+      <div class="grid-3" style="margin-bottom:24px;">
+        <div class="card">
+          <h3>Mapeamento de mercado por ICP</h3>
+          <p>Segmento, faturamento, localização, estrutura operacional — os critérios de ICP definem o topo do funil.</p>
+        </div>
+        <div class="card">
+          <h3>Exclusões estratégicas</h3>
+          <p>Evitar leads inviáveis — por exemplo, empresas em situação financeira crítica — economiza tempo do time.</p>
+        </div>
+        <div class="card">
+          <h3>Perfil de propensão à necessidade</h3>
+          <p>Busca por empresas que tipicamente sofrem com operação manual e desorganização de processo.</p>
+        </div>
+      </div>
+
+      <div class="sec-divider"><hr><span>COMO TRABALHAM VOLUME</span><hr></div>
+
+      <div class="grid-2" style="margin-bottom:24px;">
+        <div class="card">
+          <h3>Listas recorrentes e segmentadas</h3>
+          <p>Distribuídas para o time comercial. O volume de contatos qualificados é o combustível da operação.</p>
+        </div>
+        <div class="card highlight">
+          <h3>E-mail como canal principal</h3>
+          <p>E-mail tende a ser o canal mais utilizado. <strong style="color:var(--laranja)">Sem e-mail, o lead frequentemente nem entra no fluxo.</strong> Telefone nem sempre é prioridade, dependendo do modelo comercial e do custo de operação.</p>
+        </div>
+      </div>
+
+      <div class="sec-divider"><hr><span>O QUE VALORIZAM</span><hr></div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-label">Prioritário</div>
+          <h3>Precisão do ICP</h3>
+          <p>O recorte certo de perfil evita desperdício de esforço no topo do funil.</p>
+        </div>
+        <div class="card">
+          <div class="card-label">Prioritário</div>
+          <h3>Cobertura de contatos válidos</h3>
+          <p>Contato sem e-mail válido é contato inútil no modelo baseado em cadência de e-mail.</p>
+        </div>
+        <div class="card">
+          <div class="card-label">Prioritário</div>
+          <h3>Segmentação que reduz qualificação manual</h3>
+          <p>Quanto mais pré-qualificada a lista, menos tempo o time gasta filtrando antes de abordar.</p>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:20px;">
+        <span class="callout-icon">💡</span>
+        <p>Nesse modelo, o dado de <strong>"ERP instalado"</strong> nem sempre é o fator decisivo. O mais importante é identificar empresas com alta propensão à necessidade de implantação ou modernização.</p>
+      </div>
+    </div>
+
+    <!-- MODELO 2 -->
+    <div id="tab-m2" class="tab-panel fade-in">
+      <div class="callout blue">
+        <span class="callout-icon">📌</span>
+        <p>A empresa já utiliza um ERP. A consultoria vende <strong>serviços de evolução, sustentação, upgrades, módulos adicionais, migrações, integrações e projetos de otimização</strong>. A prospecção muda completamente: o objetivo é entrar com alta precisão em empresas que já têm a tecnologia certa, porque isso aumenta a chance de adequação do projeto e mantém o ticket dentro do perfil da consultoria.</p>
+      </div>
+
+      <div class="sec-divider"><hr><span>O QUE VENDEM COM MAIS FREQUÊNCIA</span><hr></div>
+
+      <div class="grid-2" style="margin-bottom:24px;">
+        <div class="card">
+          <ul>
+            <li>Sustentação e suporte contínuo (com SLA e governança)</li>
+            <li>Melhorias e evolução do ERP (processos, performance, integrações)</li>
+            <li>Upgrade de versão, migração para cloud ou mudança de arquitetura</li>
+          </ul>
+        </div>
+        <div class="card">
+          <ul>
+            <li>Módulos específicos — muito comum no fiscal e financeiro</li>
+            <li>Projetos pontuais de otimização e treinamento</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sec-divider"><hr><span>POR QUE "SUBTIPO DO ERP" É TÃO VALIOSO</span><hr></div>
+
+      <div class="callout" style="margin-bottom:20px;">
+        <span class="callout-icon">🔑</span>
+        <p>Saber que uma empresa usa <strong>"ERP X"</strong> já ajuda, mas o <strong>subtipo</strong> (variante, versão, família do produto) costuma ser o diferencial. Isso porque o subtipo tende a indicar porte e maturidade do cliente, capacidade de investimento, complexidade do ambiente e adequação ao ticket médio da consultoria. Além disso, o subtipo facilita a <strong>distribuição interna de listas</strong>, direcionando leads para especialistas corretos.</p>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:24px;">
+        <div class="card highlight">
+          <div class="card-label">Prioritário</div>
+          <h3>ERP instalado + subtipo</h3>
+          <p>O dado mais crítico nesse modelo. Define imediatamente o fit da consultoria com o prospect.</p>
+        </div>
+        <div class="card">
+          <div class="card-label">Prioritário</div>
+          <h3>Faturamento como filtro principal</h3>
+          <p>Viabilidade da conta depende diretamente do porte. Funcionários é secundário aqui.</p>
+        </div>
+        <div class="card">
+          <div class="card-label">Prioritário</div>
+          <h3>Sinais de dor operacional</h3>
+          <p>Para priorização de quem abordar primeiro dentro de uma lista já filtrada.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <span class="callout-icon">⚠️</span>
+        <p>Nesse modelo, <strong>entrar errado custa caro</strong>. Se a empresa não tem a tecnologia instalada, a consultoria perde semanas em conversa sem fit. Por isso, a qualidade do dado é crítica.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       03. PROCESSO DE VENDAS
+  ══════════════════════════════════════ -->
+  <div id="sec-processo" class="sticky-label">
+    <span>03</span>
+    <strong>Como Funciona o Processo de Vendas das Consultorias de ERP</strong>
+  </div>
+
+  <section class="section">
+    <div class="section-header fade-in">
+      <span class="sec-num">03 — PROCESSO</span>
+      <h2>O funil comercial padrão</h2>
+      <p class="lead">Apesar de variações, o processo comercial costuma seguir um padrão com 5 etapas. A qualificação e higienização é a parte mais cara e ineficiente para muitas consultorias.</p>
+    </div>
+
+    <div class="step-flow fade-in">
+      <div class="step-item">
+        <div class="step-circle">1</div>
+        <h4>Origem de Lead</h4>
+        <p>Listas de parceiros oficiais (frias), prospecção ativa por sinais, inbound e indicação</p>
+      </div>
+      <div class="step-item">
+        <div class="step-circle">2</div>
+        <h4>Qualificação e Higienização</h4>
+        <p>Porte real, segmento correto, tecnologia usada, decisores — etapa mais cara quando manual</p>
+      </div>
+      <div class="step-item">
+        <div class="step-circle">3</div>
+        <h4>Abordagem e Cadência</h4>
+        <p>E-mail como canal dominante; LinkedIn varia muito por empresa e perfil</p>
+      </div>
+      <div class="step-item">
+        <div class="step-circle">4</div>
+        <h4>Diagnóstico Consultivo</h4>
+        <p>Entendimento do processo, desenho de solução e confiança na execução</p>
+      </div>
+      <div class="step-item">
+        <div class="step-circle">5</div>
+        <h4>Proposta e Fechamento</h4>
+        <p>Múltiplas pessoas, burocracia, aprovações — explica os ciclos longos</p>
+      </div>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>DETALHES CRÍTICOS POR ETAPA</span><hr></div>
+
+    <div class="grid-2 fade-in">
+      <div class="card highlight">
+        <div class="card-label">Etapa 2 — Gargalo Central</div>
+        <h3>Qualificação e higienização</h3>
+        <p>Essa é a parte mais cara e ineficiente. É comum haver esforço manual para entender porte real da empresa, segmento correto, tecnologia usada e quem são os decisores. Quando essa etapa é manual, <strong style="color:var(--laranja)">o time perde grande parte do mês analisando empresas que não viram oportunidade.</strong></p>
+      </div>
+      <div class="card">
+        <div class="card-label">Etapa 3 — Canal</div>
+        <h3>Abordagem e cadência</h3>
+        <p>E-mail costuma ser o canal dominante. LinkedIn varia muito por empresa e por perfil. A eficiência depende diretamente do nível de segmentação e da precisão da mensagem.</p>
+        <div class="pills">
+          <span class="pill pill-orange">E-mail = canal dominante</span>
+          <span class="pill pill-gray">LinkedIn = varia</span>
+          <span class="pill pill-blue">Segmentação = fator de eficiência</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">Etapa 4 — Mesmo vendendo licença</div>
+        <h3>Diagnóstico consultivo</h3>
+        <p>Mesmo quando a consultoria vende licença, ela precisa vender: entendimento do processo, desenho de solução e confiança na execução. Sem isso, não há proposta.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Etapa 5 — Por que os ciclos são longos</div>
+        <h3>Proposta, negociação e fechamento</h3>
+        <p>Muitas pessoas envolvidas, burocracia, aprovações e alinhamento de escopo. Isso explica ciclos longos — e por que perder tempo no topo do funil é especialmente caro.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       04. PAPEL DA DRIVA
+  ══════════════════════════════════════ -->
+  <div id="sec-papel" class="sticky-label">
+    <span>04</span>
+    <strong>O Papel da Driva Nesse Mercado</strong>
+  </div>
+
+  <section class="section">
+    <div class="section-header fade-in">
+      <span class="sec-num">04 — DRIVA</span>
+      <h2>Reduzir desperdício comercial e aumentar previsibilidade</h2>
+      <p class="lead">A Driva entra para resolver o gargalo central dessas consultorias. São quatro formas principais de atuação, mais o argumento de ROI e os dois principais usos na prática.</p>
+    </div>
+
+    <div class="grid-2 fade-in" style="margin-bottom:20px;">
+      <div class="card">
+        <div class="card-label">Atuação 1</div>
+        <h3>Transformar listas frias em listas utilizáveis</h3>
+        <p>Em vez de listas com nome/domínio, a Driva permite entregar:</p>
+        <ul style="margin-top:10px;">
+          <li>Identificação correta da empresa (CNPJ)</li>
+          <li>Recorte de ICP com filtros claros</li>
+          <li>Dados de contato e perfis para prospecção</li>
+        </ul>
+      </div>
+      <div class="card highlight">
+        <div class="card-label">Atuação 2 — Modelo Base Instalada</div>
+        <h3>Aumentar precisão no modelo de base instalada</h3>
+        <p>Quando o foco é upsell e consultoria em empresas que já têm ERP, a Driva pode apoiar com:</p>
+        <ul style="margin-top:10px;">
+          <li><strong style="color:var(--laranja)">ERP instalado</strong></li>
+          <li><strong style="color:var(--laranja)">Subtipo do ERP</strong></li>
+          <li>Filtros de porte (faturamento)</li>
+          <li>Segmentação por indústria e perfil</li>
+        </ul>
+        <p style="margin-top:10px;">Isso reduz o tempo gasto com tentativa e erro.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Atuação 3</div>
+        <h3>Criar critérios de priorização por sinais de dor</h3>
+        <p>Além do ERP em si, existem sinais operacionais que ajudam a priorizar:</p>
+        <ul style="margin-top:10px;">
+          <li>Porte por faturamento</li>
+          <li>Presença e estrutura do time financeiro</li>
+          <li>Indícios de operação manual em áreas específicas (como contas a pagar)</li>
+        </ul>
+        <p style="margin-top:10px;">Esses sinais ajudam a definir quais empresas têm mais chance de sentir dor e comprar.</p>
+      </div>
+      <div class="card dark-strong">
+        <div class="card-label">Atuação 4 — Escalabilidade</div>
+        <h3>Estruturar o crescimento comercial</h3>
+        <p>Esse tipo de consultoria costuma ser tecnicamente excelente, mas sofre para escalar o comercial com eficiência. A Driva ajuda a estruturar esse crescimento.</p>
+      </div>
+    </div>
+
+    <div class="roi-box fade-in">
+      <p>Argumento de ROI que funciona para esse segmento:<br>
+      <em>menos tempo perdido com lead errado</em> e <em>mais tempo falando com empresa que tem fit</em>.</p>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>COMO AS CONSULTORIAS USAM A DRIVA NA PRÁTICA</span><hr></div>
+
+    <div class="usage-block fade-in">
+      <div class="usage-card">
+        <span class="u-num">01</span>
+        <h4>Geração de listas para outbound</h4>
+        <p>Segmentar, exportar, acionar por e-mail e/ou LinkedIn. A Driva entrega listas prontas para o time de SDR ou comercial trabalhar com cadências.</p>
+      </div>
+      <div class="usage-card">
+        <span class="u-num">02</span>
+        <h4>Enriquecimento do CRM</h4>
+        <p>Higienizar base existente, completar campos e priorizar empresas com fit. Muito útil para consultorias que têm base histórica mas com dados incompletos ou desatualizados.</p>
+      </div>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>CONCORRENTES PERCEBIDOS</span><hr></div>
+
+    <div class="concor-box fade-in">
+      <p>É comum compararem com <strong style="color:white;">bases e ferramentas de dados de mercado e prospecção</strong> — no geral: bases de CNPJ, prospecção e inteligência comercial. <br><br>
+      Como a Driva se diferencia na prática: <strong style="color:var(--laranja)">não é só "ter lista"</strong>. É reduzir o custo do erro, oferecendo melhor recorte de ICP, melhor qualificação por tecnologia e mais previsibilidade para quem vende projetos longos.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       05. PERSONAS
+  ══════════════════════════════════════ -->
+  <div id="sec-personas" class="sticky-label">
+    <span>05</span>
+    <strong>Personas — Quem Decide e Quem Influencia a Compra da Driva</strong>
+  </div>
+
+  <section class="section">
+    <div class="section-header fade-in">
+      <span class="sec-num">05 — PERSONAS</span>
+      <h2>Mapa de stakeholders</h2>
+      <p class="lead">Três camadas de personas: decisor final, influenciadores fortes e usuários do dia a dia. Entender cada camada é essencial para conduzir o processo comercial.</p>
+    </div>
+
+    <div class="persona-grid fade-in">
+      <div class="persona-card">
+        <div class="persona-header">
+          <div class="persona-role-tag" style="color:var(--laranja)">Decisor Final · Aprova orçamento</div>
+          <h3>Sócio / Sócio-diretor / Diretor Executivo</h3>
+        </div>
+        <div class="persona-body">
+          <p>Em consultorias menores e médias, é o padrão de decisão final. O <strong style="color:rgba(255,255,255,0.75)">Diretor de Operações/Delivery</strong> também aparece como decisor quando a prioridade é eficiência de execução e escala de projetos.</p>
+        </div>
+      </div>
+
+      <div class="persona-card">
+        <div class="persona-header" style="background:rgba(240,127,45,0.15)">
+          <div class="persona-role-tag" style="color:var(--laranja)">Influenciadores Fortes · Puxam a compra</div>
+          <h3>Head de Vendas / Diretor Comercial / Head de Marketing</h3>
+        </div>
+        <div class="persona-body">
+          <p style="margin-bottom:10px;"><strong style="color:rgba(255,255,255,0.75)">Head de Vendas / Diretor Comercial</strong> — quando o foco é geração de pipeline.</p>
+          <p style="margin-bottom:10px;"><strong style="color:rgba(255,255,255,0.75)">Head de Marketing / Growth</strong> — quando existe estrutura e operação de outbound/inbound.</p>
+          <p style="margin-bottom:10px;"><strong style="color:rgba(255,255,255,0.75)">Liderança de Pré-vendas</strong> — quando a consultoria tem time de SDR e quer reduzir desperdício de qualificação.</p>
+          <p><strong style="color:rgba(255,255,255,0.75)">RevOps / Inteligência Comercial</strong> — quando existe essa estrutura (consultorias maiores).</p>
+        </div>
+      </div>
+
+      <div class="persona-card">
+        <div class="persona-header" style="background:rgba(71,84,103,0.3)">
+          <div class="persona-role-tag" style="color:var(--cinza-claro)">Usuários do Dia a Dia · Operam a ferramenta</div>
+          <h3>Analistas e Coordenações Operacionais</h3>
+        </div>
+        <div class="persona-body">
+          <p style="margin-bottom:8px;"><strong style="color:rgba(255,255,255,0.75)">Analista/Coordenação de Marketing</strong> — listas, segmentações, campanhas.</p>
+          <p style="margin-bottom:8px;"><strong style="color:rgba(255,255,255,0.75)">Coordenação/Liderança de SDR</strong> — distribuição de listas, cadências, controle de qualidade.</p>
+          <p><strong style="color:rgba(255,255,255,0.75)">Analista de Inteligência Comercial</strong> — higienização, enriquecimento de CRM, segmentação.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>O QUE ESSAS CONSULTORIAS MAIS VALORIZAM NA DRIVA</span><hr></div>
+
+    <div class="grid-2 fade-in">
+      <div class="card highlight">
+        <h3>Identificação da tecnologia + subtipo</h3>
+        <p>Para aumentar precisão e evitar esforços em empresas sem fit. O subtipo é o diferencial que realmente muda a taxa de acerto.</p>
+      </div>
+      <div class="card">
+        <h3>Filtros de porte e segmento</h3>
+        <p>Especialmente faturamento e recortes por segmento para manter o ticket dentro do perfil da consultoria.</p>
+      </div>
+      <div class="card">
+        <h3>Sinais operacionais que qualificam dor</h3>
+        <p>Por exemplo: estrutura do time financeiro ou indícios de operação manual — para priorizar quem tem maior propensão de compra.</p>
+      </div>
+      <div class="card">
+        <h3>Suporte consultivo do CS</h3>
+        <p>Valorizam quando o CS ajuda a refinar ICP, reduzir desperdício e manter consistência na operação. Não é só ferramenta — é parceria.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       06. DORES
+  ══════════════════════════════════════ -->
+  <div id="sec-dores" class="sticky-label">
+    <span>06</span>
+    <strong>Dores — O Que Gera Urgência e Como Identificar o Momento Certo</strong>
+  </div>
+
+  <section class="section">
+    <div class="section-header fade-in">
+      <span class="sec-num">06 — DORES</span>
+      <h2>Falta de previsibilidade por baixa qualidade de dados no início do funil</h2>
+      <p class="lead">A dor principal é estrutural. Muitas consultorias têm dificuldade para saber, com antecedência, se a empresa tem o perfil certo, se usa a tecnologia relevante e quem são os contatos adequados para abordagem.</p>
+    </div>
+
+    <div class="callout fade-in">
+      <span class="callout-icon">🔥</span>
+      <p><strong>Dor mais urgente:</strong> Falta de previsibilidade comercial por baixa qualidade de dados no início do funil. Além disso, é comum terem time comercial enxuto e processos pouco estruturados, o que amplia o custo do erro.</p>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>COMO ISSO APARECE NO DIA A DIA</span><hr></div>
+
+    <div class="grid-3 fade-in" style="margin-bottom:28px;">
+      <div class="card">
+        <h3>Pesquisa manual empresa por empresa</h3>
+        <p>Grande parte do trabalho de pré-vendas vira pesquisa manual. O time passa horas qualificando empresas que nunca virarão oportunidade.</p>
+      </div>
+      <div class="card">
+        <h3>Descoberta tardia de não-fit</h3>
+        <p>O time começa a abordagem e só descobre tarde que a empresa não tem a tecnologia certa, não tem porte ou não tem encaixe para o ticket.</p>
+      </div>
+      <div class="card highlight">
+        <h3>Volume alto de tentativas com descarte grande</h3>
+        <p><strong style="color:var(--laranja)">Volume alto de tentativas com descarte grande já na primeira qualificação.</strong> O funil começa largo mas não pela razão certa.</p>
+      </div>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>CUSTO DE NÃO RESOLVER</span><hr></div>
+
+    <div class="grid-3 fade-in" style="margin-bottom:28px;">
+      <div class="card">
+        <h3>Profissionais caros fazendo qualificação básica</h3>
+        <p>Perda de tempo de comerciais e, em alguns casos, consultores que entram cedo na venda — sem necessidade.</p>
+      </div>
+      <div class="card">
+        <h3>Custo alto por oportunidade real</h3>
+        <p>O funil é longo por natureza e fica ainda mais caro quando o topo é fraco. Cada oportunidade real custa cada vez mais.</p>
+      </div>
+      <div class="card">
+        <h3>Menor capacidade de escala</h3>
+        <p>O time passa a ser o gargalo — não a demanda. A consultoria não consegue crescer porque a operação trava no volume de qualificação.</p>
+      </div>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>MOMENTO CERTO PARA ABORDAR</span><hr></div>
+
+    <div class="callout blue fade-in">
+      <span class="callout-icon">⏱️</span>
+      <p>É um mercado de construção contínua, mas os <strong>melhores momentos são quando:</strong></p>
+    </div>
+
+    <div class="grid-2 fade-in">
+      <div class="card">
+        <ul>
+          <li>Estão estruturando ou retomando outbound (montando cadência, SDRs, meta de pipeline)</li>
+          <li>Precisam crescer previsivelmente e não querem depender de lista de parceiro</li>
+        </ul>
+      </div>
+      <div class="card">
+        <ul>
+          <li>Estão revisando ICP, posicionamento e ticket (mudança de foco de projeto pequeno para grande, ou o contrário)</li>
+          <li><strong style="color:var(--laranja)">Estão com pressão de metas e pipeline insuficiente para os meses seguintes</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>OBJEÇÕES MAIS COMUNS E COMO LIDAR</span><hr></div>
+
+    <div class="fade-in">
+      <div class="obj-item">
+        <div class="obj-q">Eu já recebo leads do meu parceiro</div>
+        <div class="obj-a">Objeção clássica. A crítica normalmente não é "não preciso de lead" — é "não quero pagar por algo que teoricamente já tenho". O ponto a desenvolver: a qualidade dessas listas é baixa (frias, sem CNPJ, sem contato, sem tecnologia instalada). A Driva entrega o que eles teoricamente têm, mas que na prática não funciona.</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-q">Dificuldade de perceber ROI no curto prazo</div>
+        <div class="obj-a">Como o ciclo de venda de ERP e projetos de consultoria é longo, existe ansiedade para comprovar resultado em poucos meses. Trabalhar com métricas de processo (tempo de qualificação, taxa de descarte, custo por lead qualificado) ajuda a demonstrar valor antes do fechamento de negócios.</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-q">Minha operação ainda não está pronta para trabalhar volume</div>
+        <div class="obj-a">Aparece quando o time comercial é enxuto e não consegue absorver listas. Resposta: a Driva não precisa gerar volume enorme — o valor está na qualidade e no fit das empresas. Uma lista menor e mais precisa é melhor do que uma lista grande e fria.</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-q">Não quero mais uma ferramenta</div>
+        <div class="obj-a">Preocupação com adoção e gestão de mais um sistema — especialmente em consultorias mais tradicionais. Posicionar a Driva como dado e inteligência, não como mais uma ferramenta de gestão. O produto é o insight, não a plataforma em si.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       07. DADOS E ANÁLISES
+  ══════════════════════════════════════ -->
+  <div id="sec-dados" class="sticky-label">
+    <span>07</span>
+    <strong>Dados e Análises que Importam</strong>
+  </div>
+
+  <section class="section">
+    <div class="section-header fade-in">
+      <span class="sec-num">07 — DADOS</span>
+      <h2>O que é relevante e por quê</h2>
+      <p class="lead">Para consultorias de ERP, a combinação certa de dados muda completamente a taxa de acerto do ICP. Entender o que priorizar é o que diferencia uma abordagem eficiente de uma baseada em tentativa e erro.</p>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>DADOS MAIS RELEVANTES</span><hr></div>
+
+    <div class="grid-3 fade-in" style="margin-bottom:28px;">
+      <div class="card highlight">
+        <div class="card-label">Prioritário #1</div>
+        <h3>Tecnologia / ERP instalado</h3>
+        <p>E, quando disponível, o subtipo. É o dado que mais impacta a precisão para o modelo de base instalada.</p>
+      </div>
+      <div class="card highlight">
+        <div class="card-label">Prioritário #2</div>
+        <h3>Faturamento</h3>
+        <p>Filtro principal de viabilidade. Número de funcionários costuma ser secundário nesse segmento.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Prioritário #3</div>
+        <h3>Segmento / CNAE</h3>
+        <p>Com concentração em indústrias e operações mais complexas: manufatura, varejo com estoque, logística, saúde e serviços financeiros — varia conforme o tipo de consultoria.</p>
+      </div>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>DATAPACK DE ERP</span><hr></div>
+
+    <div class="fade-in" style="margin-bottom:28px;">
+      <div class="callout">
+        <span class="callout-icon">📦</span>
+        <p>O foco principal é o <strong>Datapack de ERP</strong> — que identifica qual ERP das empresas usam entre SAP, TOTVS, Oracle, Microsoft e similares — e, quando possível, suas variações (SAP Business One, SAP Sapphire, SAP S/4HANA).</p>
+      </div>
+
+      <p style="font-size:12px;color:rgba(255,255,255,0.3);margin:16px 0 10px;text-transform:uppercase;letter-spacing:0.1em;font-family:'IBM Plex Mono',monospace;">ERPs mapeados</p>
+      <div class="erp-badges">
+        <span class="erp-b main">TOTVS</span>
+        <span class="erp-b main">SAP</span>
+        <span class="erp-b main">Oracle</span>
+        <span class="erp-b main">Microsoft Dynamics</span>
+        <span class="erp-b main">Senior</span>
+        <span class="erp-b sub">OMIe</span>
+        <span class="erp-b sub">Sankhya</span>
+        <span class="erp-b sub">Benner</span>
+        <span class="erp-b sub">Tiny</span>
+        <span class="erp-b sub">SIGE</span>
+        <span class="erp-b sub">Sisplan</span>
+        <span class="erp-b sub">Consistem</span>
+        <span class="erp-b sub">TOTVS Protheus</span>
+      </div>
+
+      <p style="font-size:12px;color:rgba(255,255,255,0.3);margin:20px 0 10px;text-transform:uppercase;letter-spacing:0.1em;font-family:'IBM Plex Mono',monospace;">Exemplo de subtipos SAP</p>
+      <div class="erp-badges">
+        <span class="erp-b highlight">SAP Business One</span>
+        <span class="erp-b highlight">SAP Sapphire</span>
+        <span class="erp-b highlight">SAP S/4HANA</span>
+      </div>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>ANÁLISE QUE MAIS GERA VALOR PERCEBIDO</span><hr></div>
+
+    <div class="card highlight fade-in">
+      <div class="card-label">🏆 O que mais "muda o jogo"</div>
+      <h3>Diferenciar cenários dentro do mesmo fabricante (subtipo/variante)</h3>
+      <p>Isso melhora a taxa de acerto do ICP, reduz desperdício e ajuda a manter o ticket alinhado com o público certo. Uma consultoria especializada em SAP Business One tem um ICP muito diferente de uma especializada em SAP S/4HANA — mesmo fabricante, mundos diferentes.</p>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>METODOLOGIA DE MAPEAMENTO</span><hr></div>
+
+    <div class="callout blue fade-in">
+      <span class="callout-icon">🔬</span>
+      <p><strong>Como a base de ERPs é construída:</strong> Através de um crawling no LinkedIn, focando em dois vetores:</p>
+    </div>
+
+    <div class="meto-grid fade-in">
+      <div class="meto-item">
+        <div class="meto-tag">Vetor 1 — Requisitos de Vagas</div>
+        <p>Analisamos os ERPs mencionados em descrições de vagas abertas. Quando uma empresa exige experiência em SAP em uma vaga, isso sinaliza o ERP em uso.</p>
+      </div>
+      <div class="meto-item">
+        <div class="meto-tag">Vetor 2 — Habilidades de Funcionários</div>
+        <p>Mapeamos os ERPs nas habilidades e experiências dos perfis de funcionários. Funcionários que listam um ERP como habilidade são indicadores do stack da empresa.</p>
+      </div>
+    </div>
+
+    <div class="callout fade-in" style="margin-top:20px;">
+      <span class="callout-icon">🔗</span>
+      <p>Esses dados foram então <strong>associados à raiz do CNPJ</strong> de cada empresa, permitindo a criação de análises detalhadas — perfil do mercado, segmentação por ERP, faixa de faturamento, distribuição geográfica e detalhamento empresa a empresa.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       08. PITCH E PERGUNTAS DE DIAGNÓSTICO
+  ══════════════════════════════════════ -->
+  <div id="sec-pitch" class="sticky-label">
+    <span>08</span>
+    <strong>Pitch e Perguntas de Diagnóstico</strong>
+  </div>
+
+  <section class="section">
+    <div class="section-header fade-in">
+      <span class="sec-num">08 — PITCH</span>
+      <h2>Em vez de perguntas genéricas — oriente pelo modelo da consultoria</h2>
+      <p class="lead">O pitch ideal muda dependendo de como a consultoria opera. Entender o modelo antes de apresentar a solução é o que separa uma abordagem consultiva de uma abordagem de produto.</p>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>PERGUNTAS QUE REALMENTE QUALIFICAM E CONDUZEM O PITCH</span><hr></div>
+
+    <div class="q-list fade-in">
+      <div class="q-item">
+        <span class="qn">Q1</span>
+        <p><strong style="color:rgba(255,255,255,0.85)">Vocês vendem mais implantação nova ou trabalham mais base instalada (upsell/evolução)?</strong><br>
+        <span style="color:rgba(255,255,255,0.45);margin-top:4px;display:block;">Isso define se o argumento principal é "mercado" ou "tecnologia instalada". É a pergunta mais importante — responde tudo sobre onde posicionar a Driva.</span></p>
+      </div>
+      <div class="q-item">
+        <span class="qn">Q2</span>
+        <p><strong style="color:rgba(255,255,255,0.85)">Qual é o piso de porte que faz sentido para vocês?</strong><br>
+        <span style="color:rgba(255,255,255,0.45);margin-top:4px;display:block;">Na prática, faturamento costuma ser o filtro mais objetivo. Entender o piso define o que vai (e o que não vai) para a lista.</span></p>
+      </div>
+      <div class="q-item">
+        <span class="qn">Q3</span>
+        <p><strong style="color:rgba(255,255,255,0.85)">Quais segmentos vocês priorizam hoje e quais vocês evitam?</strong><br>
+        <span style="color:rgba(255,255,255,0.45);margin-top:4px;display:block;">Aqui entram indústria, operação com estoque, complexidade fiscal, etc. — mas depende da especialidade da consultoria. Não assumir: perguntar.</span></p>
+      </div>
+      <div class="q-item">
+        <span class="qn">Q4</span>
+        <p><strong style="color:rgba(255,255,255,0.85)">Vocês atuam nacionalmente ou têm recortes de UF/região?</strong><br>
+        <span style="color:rgba(255,255,255,0.45);margin-top:4px;display:block;">Muda a montagem da lista e o planejamento de volume. Uma consultoria regional tem dinâmica completamente diferente de uma nacional.</span></p>
+      </div>
+      <div class="q-item">
+        <span class="qn">Q5</span>
+        <p><strong style="color:rgba(255,255,255,0.85)">Quais tecnologias são prioridade para vocês (e quais não valem esforço)?</strong><br>
+        <span style="color:rgba(255,255,255,0.45);margin-top:4px;display:block;">Não é sobre "Lucro Real/Presumido". Para ERP, a pergunta mais útil é: <em style="color:rgba(255,255,255,0.6);">"Qual stack vocês atendem melhor e quais versões/subtipos são o melhor perfil de ticket?"</em></span></p>
+      </div>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>COMO ADAPTAR O PITCH POR MODELO</span><hr></div>
+
+    <div class="grid-2 fade-in">
+      <div class="pitch-block">
+        <div class="model-tag">Modelo 1 — Implantação nova</div>
+        <h3>Se a consultoria vende novos projetos de ERP</h3>
+        <p class="quote-text">
+          "Vamos te dar previsibilidade de mercado com ICP claro e contatos válidos, para você não depender de lista fria e nem de tentativa e erro."
+        </p>
+      </div>
+      <div class="pitch-block">
+        <div class="model-tag">Modelo 2 — Base instalada (upsell/evolução)</div>
+        <h3>Se a consultoria vende evolução e consultoria em ERP instalado</h3>
+        <p class="quote-text">
+          "Vamos te dizer quem já tem a tecnologia certa, com recorte de porte e sinais de operação, para o seu time abordar com precisão e reduzir descarte na qualificação."
+        </p>
+      </div>
+    </div>
+
+    <div class="callout fade-in" style="margin-top:28px;">
+      <span class="callout-icon">💡</span>
+      <p>Se a consultoria é uma combinação dos dois modelos, <strong>mapeie qual é o modelo dominante</strong> e use o pitch correspondente como base. Adapte os detalhes com base nas respostas às 5 perguntas de diagnóstico.</p>
+    </div>
+
+    <div class="sec-divider fade-in"><hr><span>RESUMO — CONCEITO CENTRAL DA DRIVA PARA ESSE SEGMENTO</span><hr></div>
+
+    <div class="roi-box fade-in">
+      <p style="font-size:1.3rem;">
+        <em>"Guiar através de dados"</em>
+      </p>
+      <p style="font-size:14px;color:rgba(255,255,255,0.5);margin-top:12px;font-family:'DM Sans',sans-serif;font-weight:400;font-style:normal;">
+        A Driva não é mais uma lista — é o mecanismo que transforma mercado em oportunidade real, reduzindo o custo do erro em um dos ciclos de venda mais longos do B2B.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+function setActive(el) {
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function switchTab(btn, modelId) {
+  const parent = btn.closest('section') || btn.closest('.section');
+  const allBtns = btn.parentElement.querySelectorAll('.tab-btn');
+  const allPanels = parent.querySelectorAll('.tab-panel');
+  allBtns.forEach(b => b.classList.remove('active'));
+  allPanels.forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const target = parent.querySelector('#tab-' + modelId);
+  if(target) target.classList.add('active');
+}
+
+// Scroll spy
+const sections = ['sec-overview','sec-modelos','sec-processo','sec-papel','sec-personas','sec-dores','sec-dados','sec-pitch'];
+const navLinks = document.querySelectorAll('.nav-item');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+
+sections.forEach(id => {
+  const el = document.getElementById(id);
+  if(el) {
+    // observe the sticky label
+    observer.observe(el);
+  }
+});
+
+// Fade in
+const fadeObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.07 });
+
+document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+</script>
+</body>
+</html>
